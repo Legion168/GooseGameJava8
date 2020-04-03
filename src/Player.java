@@ -1,5 +1,3 @@
-package model;
-
 public class Player implements Comparable<Player> {
     private String username;
     private Integer pos;
@@ -22,13 +20,12 @@ public class Player implements Comparable<Player> {
 
     public Player(String username) {
         this.username = username;
-        this.pos = (int) (Math.random() * ((100-50)+1)+50);
-        System.out.println(pos);
+        this.pos = 0;
     }
 
     @Override
     public String toString() {
-        return " - " + username.toUpperCase();
+        return username;
     }
 
     @Override

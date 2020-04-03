@@ -1,91 +1,65 @@
-import model.Player;
-
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class mainClass {
-    private static void insertPlayer(List<Player> playerList) {
-        boolean found;
-
-        System.out.println("Insert player " + (playerList.size() + 1) + " name: ");
-
-        do {
-            Scanner scanner = new Scanner(System.in);
-
-            String name = scanner.nextLine().trim();
-
-            found = playerList.stream().anyMatch(p -> p.getUsername().equalsIgnoreCase(name));
-
-            if (found) {
-                System.out.println("Name already taken!\nPlease insert new one.");
-            } else if (name.isEmpty()) {
-                System.out.println("Name inserted is empty!\nPlease insert a valid name.");
-                found = true;
-            } else {
-                playerList.add(new Player(name));
-                System.out.println("\nPlayer " + name.toUpperCase() + " joined the game!");
-            }
-        } while (found);
-    }
-
-    private static void showPlayers(List<Player> playerList) {
-        System.out.println("       PLAYERS     ");
-        System.out.println("---------------------");
-
-        if (playerList.size() > 0)
-            playerList.forEach(System.out::println);
-        else
-            System.out.println("No player joined yet!");
-    }
+    private static final String[] POSSIBLE_CHOICES = {"add", "show", "start", "exit"};
 
     private static void readOption() {
-        int choice = 999;
+        boolean exit = false;
         List<Player> playerList = new ArrayList<>();
 
         do {
+            String choice = "";
+
             System.out.println("\nChoose what to do: \n");
 
-            System.out.println("1) Add New Player");
-            System.out.println("2) Show Signed Players");
-            System.out.println("3) Start Game");
-            System.out.println("4) Exit\n");
+            System.out.println("- Add New Player");
+            System.out.println("- Show Signed Players");
+            System.out.println("- Start Game");
+            System.out.println("- Exit\n");
+
+            String[] valuesFromInput;
 
             do {
                 Scanner in = new Scanner(System.in);
-                try {
-                    choice = in.nextInt();
 
-                    if (choice > 4)
-                        System.out.println("Error!\nYou inserted a undefined option, please choose from the ones above.");
-                } catch (InputMismatchException e) {
-                    System.out.println("Error!\nYou inserted a letter, please insert the number corresponding the option from above.");
-                }
-            } while (choice > 4);
+                valuesFromInput = in.nextLine().trim().split("\\s+");
+
+                if (!Arrays.asList(POSSIBLE_CHOICES).contains(valuesFromInput[0].toLowerCase()))
+                    System.out.println("Error!\nYou inserted a undefined option, please choose from the ones above.");
+                else
+                    choice = valuesFromInput[0].toLowerCase();
+
+            } while (choice.isEmpty());
 
             switch (choice) {
-                case 1:
-                    insertPlayer(playerList);
-                    choice = 999;
+                case "add":
+                    String username = null;
+
+                    if (valuesFromInput.length > 2)
+                        username = valuesFromInput[valuesFromInput.length - 1];
+
+                    new PlayerImpl(playerList).insertPlayer(username);
                 break;
 
-                case 2:
-                    showPlayers(playerList);
-                    choice = 999;
+                case "show":
+                    new PlayerImpl(playerList).showPlayers();
                 break;
 
-                case 3:
-                    if (playerList.size() == 0)
-                        System.out.println("No player signed for the game!\nInsert new players in order to play.");
+                case "start":
+                    if (playerList.size() <= 1)
+                        System.out.println("Not enough players signed for the game!\nIn order to play there must be at least two.");
                     else
-                        new Game().startGame(playerList);
+                        new Game(playerList).startGame();
+                break;
 
-                    choice = 999;
+                case "exit":
+                    exit = true;
                 break;
 
             }
-        } while (choice != 4);
+        } while (!exit);
+
+        System.out.println("\nGoodbye!");
     }
 
     public static void main(String[] args) {
@@ -96,7 +70,5 @@ public class mainClass {
         System.out.println("*********************************************");
 
         readOption();
-
-        System.out.println("\nGoodbye!");
     }
 }
