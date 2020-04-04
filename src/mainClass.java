@@ -33,9 +33,9 @@ public class mainClass {
 
             switch (choice) {
                 case "add":
-                    String username = null;
+                    String username = "";
 
-                    if (valuesFromInput.length > 2)
+                    if (valuesFromInput.length > 1)
                         username = valuesFromInput[valuesFromInput.length - 1];
 
                     new PlayerImpl(playerList).insertPlayer(username);

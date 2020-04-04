@@ -143,6 +143,7 @@ public class Game {
 
         System.out.println("\nEnd of game!");
         System.out.println("The winner is: " + winner);
+        playerList.clear();
     }
 
     public Game(List<Player> playerList) {
