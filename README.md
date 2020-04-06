@@ -142,6 +142,8 @@ quit
 
 This feature was added because i though that if a player got bored of playing he could quit without stopping the game. Of course the lasting player will automatically win.
 
+## License
+
 Copyright 2020 Giampaolo Conca
 
    Licensed under the Apache License, Version 2.0 (the "License");
