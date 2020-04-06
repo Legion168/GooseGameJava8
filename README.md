@@ -120,6 +120,8 @@ i want to move of 3 and 5
 3 5
 ```
 
+In order to have acceptable roll you can't write a number greater than 6. 
+
 ### Look on board
 
 You can look the board with this command:
